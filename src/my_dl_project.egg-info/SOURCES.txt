@@ -1,0 +1,14 @@
+README.md
+pyproject.toml
+src/my_dl_project/__init__.py
+src/my_dl_project.egg-info/PKG-INFO
+src/my_dl_project.egg-info/SOURCES.txt
+src/my_dl_project.egg-info/dependency_links.txt
+src/my_dl_project.egg-info/requires.txt
+src/my_dl_project.egg-info/top_level.txt
+src/my_dl_project/data/__init__.py
+src/my_dl_project/data/defungi.py
+src/my_dl_project/models/__init__.py
+src/my_dl_project/models/simple_cnn.py
+src/my_dl_project/training/__init__.py
+src/my_dl_project/training/trainer.py

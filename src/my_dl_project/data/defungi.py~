@@ -1,0 +1,64 @@
+from pathlib import Path
+
+import torch
+from PIL import Image
+from torch.utils.data import Dataset
+
+DEFUNGI_CLASSES = ["H1", "H2", "H3", "H5", "H6"]
+IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png"}
+
+
+class DeFungiDataset(Dataset):
+    """Custom PyTorch Dataset for DeFungi-style folder data.
+
+    Expected structure:
+
+        root_dir/
+        ├── H1/
+        ├── H2/
+        ├── H3/
+        ├── H5/
+        └── H6/
+    """
+
+    def __init__(self, root_dir, transform=None):
+        self.root_dir = Path(root_dir)
+        self.transform = transform
+        self.class_names = DEFUNGI_CLASSES
+        self.class_to_idx = {name: idx for idx, name in enumerate(self.class_names)}
+        self.samples = []
+        
+        if not self.root_dir.exists():
+            raise FileNotFoundError(f"Dataset directory does not exist: {self.root_dir}")
+
+        for class_name in self.class_names:
+            class_dir = self.root_dir / class_name
+            if not class_dir.is_dir():
+                raise FileNotFoundError(f"Expected class folder not found: {class_dir}")
+
+            image_paths = sorted(
+                path for path in class_dir.iterdir()
+                if path.is_file() and path.suffix.lower() in IMAGE_EXTENSIONS
+            )
+
+            label = self.class_to_idx[class_name]
+            for image_path in image_paths:
+                self.samples.append((image_path, label))
+
+        if len(self.samples) == 0:
+            raise RuntimeError(f"No images found in {self.root_dir}")
+
+    def __len__(self):
+        return len(self.samples)
+
+    def __getitem__(self, index):
+        image_path, label = self.samples[index]
+
+        with Image.open(image_path) as image:
+            image = image.convert("RGB")
+
+        if self.transform is not None:
+            image = self.transform(image)
+
+        label_tensor = torch.tensor(label, dtype=torch.long)
+        return image, label_tensor

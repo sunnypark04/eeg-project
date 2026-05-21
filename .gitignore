@@ -1,0 +1,10 @@
+venv/
+.venv/
+__pycache__/
+*.pyc
+slurm_logs/
+outputs/
+*.pt
+*.pth
+*.out
+*.err

@@ -1,0 +1,14 @@
+Metadata-Version: 2.4
+Name: my-dl-project
+Version: 0.1.0
+Summary: A minimal deep learning project skeleton for DSCI 410/510.
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: torch
+Requires-Dist: torchvision
+Requires-Dist: PyYAML
+
+# my-dl-project
+
+Your project text will go here
+
