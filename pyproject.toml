@@ -5,13 +5,19 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "my-dl-project"
 version = "0.1.0"
-description = "A minimal deep learning project skeleton for DSCI 410/510."
+description = "EEG motor imagery classification project for DSCI 410/510."
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.9"
 dependencies = [
     "torch",
     "torchvision",
-    "PyYAML"
+    "PyYAML",
+    "mne",
+    "numpy",
+    "pandas",
+    "matplotlib",
+    "scikit-learn",
+    "jupyter"
 ]
 
 [tool.setuptools]
