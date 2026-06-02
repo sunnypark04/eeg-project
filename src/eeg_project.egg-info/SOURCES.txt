@@ -1,0 +1,10 @@
+README.md
+pyproject.toml
+src/eeg_project/__init__.py
+src/eeg_project/dataset.py
+src/eeg_project/models.py
+src/eeg_project.egg-info/PKG-INFO
+src/eeg_project.egg-info/SOURCES.txt
+src/eeg_project.egg-info/dependency_links.txt
+src/eeg_project.egg-info/requires.txt
+src/eeg_project.egg-info/top_level.txt

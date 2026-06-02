@@ -1,10 +1,27 @@
-venv/
-.venv/
+# Local full EEG dataset
+data/
+*.edf
+
+# Python
 __pycache__/
 *.pyc
-slurm_logs/
-outputs/
-*.pt
-*.pth
-*.out
-*.err
+.venv/
+venv/
+.env
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Mac
+.DS_Store
+
+# Training outputs
+results/*.pt
+results/*.pth
+results/*.ckpt
+
+# Keep result summaries and figures if you want to show them in GitHub
+!results/*.json
+!results/*.csv
+!results/figures/
+!results/figures/*.png

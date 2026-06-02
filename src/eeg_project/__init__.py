@@ -1,0 +1,1 @@
+"""EEG motor imagery classification project."""

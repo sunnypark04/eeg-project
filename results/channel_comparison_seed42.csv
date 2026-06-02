@@ -1,0 +1,4 @@
+channel_set,num_channels,test_accuracy,test_macro_f1,best_val_macro_f1,model_path,confusion_matrix_plot
+full,64,0.7005847953216374,0.6993406593406594,0.7038602284348394,results/eeg_full_seed42.pt,results/figures/confusion_full_seed42.png
+motor21,21,0.6947368421052632,0.6933256007948756,0.6949847423766767,results/eeg_motor21_seed42.pt,results/figures/confusion_motor21_seed42.png
+central3,3,0.6011695906432749,0.5831003759253355,0.5960580137242362,results/eeg_central3_seed42.pt,results/figures/confusion_central3_seed42.png

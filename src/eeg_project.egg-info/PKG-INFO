@@ -1,0 +1,13 @@
+Metadata-Version: 2.4
+Name: eeg-project
+Version: 0.1.0
+Summary: EEG motor imagery classification comparing full and reduced EEG channel sets
+Requires-Python: >=3.9
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: torch
+Requires-Dist: scikit-learn
+Requires-Dist: mne
+Requires-Dist: tqdm
+Requires-Dist: matplotlib
+Requires-Dist: ipykernel

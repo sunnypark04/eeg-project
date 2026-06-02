@@ -1,27 +1,18 @@
-[build-system]
-requires = ["setuptools>=68", "wheel"]
-build-backend = "setuptools.build_meta"
-
 [project]
-name = "my-dl-project"
+name = "eeg-project"
 version = "0.1.0"
-description = "EEG motor imagery classification project for DSCI 410/510."
-readme = "README.md"
+description = "EEG motor imagery classification comparing full and reduced EEG channel sets"
 requires-python = ">=3.9"
 dependencies = [
-    "torch",
-    "torchvision",
-    "PyYAML",
-    "mne",
     "numpy",
     "pandas",
-    "matplotlib",
+    "torch",
     "scikit-learn",
-    "jupyter"
+    "mne",
+    "tqdm",
+    "matplotlib",
+    "ipykernel"
 ]
-
-[tool.setuptools]
-package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
