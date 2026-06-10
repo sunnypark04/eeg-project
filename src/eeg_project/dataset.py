@@ -129,13 +129,12 @@ def make_subject_splits(
     return train_subjects, val_subjects, test_subjects
 
 
-def read_raw_edf(file_path: Path, target_sfreq: float = 160.0):
-    """
-    Read one EDF file and resample it to a fixed sampling rate.
-
-    Resampling is important because DataLoader batches require every EEG
-    window to have the same number of time points.
-    """
+def read_raw_edf(
+    file_path: Path,
+    target_sfreq: float = 160.0,
+    l_freq: float = 1.0,
+    h_freq: float = 40.0,
+):
     raw = mne.io.read_raw_edf(file_path, preload=True, verbose=False)
 
     try:
@@ -149,6 +148,9 @@ def read_raw_edf(file_path: Path, target_sfreq: float = 160.0):
 
     if target_sfreq is not None and abs(current_sfreq - target_sfreq) > 1e-6:
         raw.resample(target_sfreq, npad="auto", verbose=False)
+
+    if l_freq is not None or h_freq is not None:
+        raw.filter(l_freq=l_freq, h_freq=h_freq, verbose=False)
 
     return raw
 
@@ -242,6 +244,8 @@ class EEGMotorImageryDataset(Dataset):
         tmax: float = 3.5,
         normalize: bool = True,
         target_sfreq: float = 160.0,
+        l_freq: float = 1.0,
+        h_freq: float = 40.0,
     ):
         self.data_dir = Path(data_dir)
         self.subjects = list(subjects) if subjects is not None else None
@@ -252,6 +256,8 @@ class EEGMotorImageryDataset(Dataset):
         self.tmax = float(tmax)
         self.normalize = normalize
         self.target_sfreq = target_sfreq
+        self.l_freq = l_freq
+        self.h_freq = h_freq
 
         if self.tmax <= self.tmin:
             raise ValueError("tmax must be greater than tmin.")
@@ -278,8 +284,12 @@ class EEGMotorImageryDataset(Dataset):
     def _build_index(self) -> None:
         for file_path in self.files:
             subject, run = parse_subject_and_run(file_path)
-            raw = read_raw_edf(file_path, target_sfreq=self.target_sfreq)
-
+            raw = read_raw_edf(
+                file_path,
+                target_sfreq=self.target_sfreq,
+                l_freq=self.l_freq,
+                h_freq=self.h_freq,
+            )
             if self.sfreq is None:
                 self.sfreq = float(raw.info["sfreq"])
 
@@ -348,10 +358,12 @@ class EEGMotorImageryDataset(Dataset):
         file_path = Path(file_path)
 
         if file_path not in self._raw_cache:
-            self._raw_cache[file_path] = read_raw_edf(
+         self._raw_cache[file_path] = read_raw_edf(
             file_path,
             target_sfreq=self.target_sfreq,
-            )
+            l_freq=self.l_freq,
+            h_freq=self.h_freq,
+        )
 
         return self._raw_cache[file_path]
 
@@ -425,6 +437,9 @@ class EEGMotorImageryDataset(Dataset):
             "num_channels": self.num_channels,
             "channel_names": self.channel_names,
             "sfreq": self.sfreq,
+            "target_sfreq": self.target_sfreq,
+            "l_freq": self.l_freq,
+            "h_freq": self.h_freq,
             "num_timepoints": self.num_timepoints,
             "label_counts": dict(zip(unique.tolist(), counts.tolist())),
         }
